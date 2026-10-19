@@ -22,7 +22,7 @@ h1{font-size:clamp(38px,8vw,72px);font-weight:400;line-height:1.05;letter-spacin
 .section{border-top:1px solid var(--line);padding:32px 0;margin-top:20px}.section h2{font-size:28px;font-weight:400;margin:0 0 12px}.hint{font:13px/1.6 Arial,sans-serif;color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
 .media{border:1px dashed #cfc5b7;min-height:160px;padding:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:var(--muted);font:13px/1.6 Arial,sans-serif;border-radius:4px;overflow:hidden}
-.media img,.media video{width:100%;height:100%;max-height:360px;object-fit:cover;border-radius:2px}.photo-card{margin:0;padding:10px;gap:10px}.photo-card figcaption{font:12px Arial,sans-serif;color:var(--muted)}.media audio{width:100%;margin-top:12px}
+.media img,.media video{width:100%;height:100%;max-height:360px;object-fit:cover;border-radius:2px}.media audio{width:100%;margin-top:12px}
 .media input{max-width:100%;font-size:12px;margin-top:10px}
 .uploads{display:grid;gap:12px;margin-top:16px}.uploadrow{font:13px Arial,sans-serif;display:flex;flex-wrap:wrap;align-items:center;gap:12px}.uploadrow label{min-width:115px;color:var(--muted)}
 footer{text-align:center;color:var(--muted);font:11px Arial,sans-serif;letter-spacing:.08em;margin-top:60px}
@@ -61,53 +61,23 @@ Aquí puedes escribir tu carta personal. Sustituye este texto por todo lo que qu
         <h2>Nuestros recuerdos</h2>
         <p class="hint">Añade tus fotos desde tu dispositivo. Se mostrarán en esta página mientras esté abierta. Para que aparezcan también a otras personas, tendrás que subirlas al proyecto antes de publicarlo.</p>
         <div class="grid" id="photoGrid">
-          <figure class="media photo-card"><img src="foto1.png" alt="Fotografía de unos hierros de golf Cobra Fly-Z XL para mujer"><figcaption>Un recuerdo para ti</figcaption></figure>
-          <figure class="media photo-card"><img src="foto2.png" alt="Fotografía de una madera de golf blanca entre hojas verdes"><figcaption>Y otro recuerdo especial</figcaption></figure>
-        </div>
-        <div class="uploads">
-          <div class="uploadrow"><label for="photos">Añadir más fotos (opcional)</label><input id="photos" type="file" accept="image/*" multiple></div>
+          <div class="media"><img src="palos-cobra.jpg" alt="Hierros Cobra Fly-Z XL para mujer sobre un banco de madera"></div>
+          <div class="media"><img src="palo-blanco.jpg" alt="Cabeza blanca de un palo de golf entre hojas verdes"></div>
         </div>
       </section>
 
-      <section class="section">
-        <h2>Una canción para ti</h2>
-        <p class="hint">Elige un archivo de audio para añadir música. Si publicas la web, incluye el archivo en la carpeta del proyecto para que la otra persona pueda escucharlo.</p>
-        <div class="media" style="min-height:110px">
-          <div id="audioLabel">Tu canción especial</div>
-          <audio id="audioPlayer" controls></audio>
-          <input id="audioFile" type="file" accept="audio/*" aria-label="Elegir archivo de música">
-        </div>
-      </section>
-
-      <section class="section">
-        <h2>Un vídeo para recordar</h2>
-        <p class="hint">Añade un vídeo personal. Para que funcione desde el enlace público, incluye el archivo de vídeo al publicar la web.</p>
-        <div class="media" id="videoWrap" style="min-height:190px">
-          <div id="videoLabel">Aquí estará vuestro vídeo</div>
-          <video id="videoPlayer" controls playsinline style="display:none"></video>
-          <input id="videoFile" type="file" accept="video/*" aria-label="Elegir archivo de vídeo">
-        </div>
-      </section>
     </section>
   </main>
   <footer>HECHO CON CARIÑO · 20 OCTUBRE 2026</footer>
 </div>
 <script>
-/*
-  FECHA DE APERTURA: 20 de octubre de 2026 a las 00:00, hora peninsular española.
-  La fecha se comprueba en el navegador. Esta versión es un prototipo estático:
-  el bloqueo visual puede saltarse inspeccionando el código y no es una protección
-  de secretos. Para privacidad real, el contenido debe servirse desde un backend
-  que lo autorice solo después de la fecha.
-*/
+/* Fecha de apertura: 20 de octubre de 2026 a las 00:00, hora peninsular española. */
 const unlockAt = new Date('2026-10-20T00:00:00+02:00');
 const locked = document.getElementById('locked');
 const unlocked = document.getElementById('unlocked');
-const countdown = document.getElementById('countdown');
 const pad = n => String(n).padStart(2,'0');
 function update(){
-  const now = new Date();
-  const remaining = unlockAt - now;
+  const remaining = unlockAt - new Date();
   if(remaining <= 0){
     locked.style.display='none';
     unlocked.classList.add('show');
@@ -120,26 +90,6 @@ function update(){
   document.getElementById('seconds').textContent = pad(total%60);
 }
 update(); setInterval(update,1000);
-document.getElementById('photos').addEventListener('change', e=>{
-  const files=[...e.target.files];
-  const grid=document.getElementById('photoGrid'); grid.innerHTML='';
-  files.forEach(file=>{
-    const card=document.createElement('div'); card.className='media';
-    const img=document.createElement('img'); img.alt=file.name; img.src=URL.createObjectURL(file);
-    card.appendChild(img); grid.appendChild(card);
-  });
-});
-document.getElementById('audioFile').addEventListener('change',e=>{
-  const file=e.target.files[0]; if(!file)return;
-  document.getElementById('audioPlayer').src=URL.createObjectURL(file);
-  document.getElementById('audioLabel').textContent=file.name;
-});
-document.getElementById('videoFile').addEventListener('change',e=>{
-  const file=e.target.files[0]; if(!file)return;
-  const player=document.getElementById('videoPlayer');
-  player.src=URL.createObjectURL(file); player.style.display='block';
-  document.getElementById('videoLabel').style.display='none';
-});
 </script>
 </body>
 </html>
